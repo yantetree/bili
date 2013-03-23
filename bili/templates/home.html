@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block head_css_section %}
+    <link href="/static/css/home.css" rel="stylesheet">
+{% endblock head_css_section %}
+{% block body_main %}
+<div id="search-wrap">
+    <div id="input-wrap" class="input-append">
+        <input id="cmp-input" type="text" class="span4" placeholder="hehehe">
+        <button id="cmp-btn" type="button" class="btn btn-primary">比吧!</button>
+    </div>
+    <div class="checkbox-wrap">
+        <label class="checkbox inline">
+            <input type="checkbox" id="tmall" value="tmall"> 天猫
+        </label>
+        <label class="checkbox inline">
+            <input type="checkbox" id="amazon" value="amazon"> 亚马逊
+        </label>
+    </div>
+</div>
+{% endblock body_main %}
+{% block footer_javascript_page %}
+<script src="/static/js/home.js"></script>
+{% endblock footer_javascript_page %}

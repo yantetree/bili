@@ -1,0 +1,17 @@
+#search-wrap {
+    margin-top: 15em;
+    text-align: center;
+}
+
+#input-wrap {
+    width: 100%;
+}
+
+#checkbox-wrap {
+    width: 100%;
+}
+
+.checkbox-wrap label{
+    width: 60px;
+    vertical-align: left;
+}

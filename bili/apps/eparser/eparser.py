@@ -6,12 +6,12 @@ from pyquery import PyQuery
 
 #from crawer import Crawer
 
-import urllib
+import urllib 
+__all__ = ['TmallParser', 'AmazonParser', 'get_parser', 'QueryException', 
+           'PARSERS_DICT']
 
-__all__ = ['TmallParser', 'AmazonParser', 'get_parser', 'QueryException']
 
-
-class QueryException(Exception):
+class QueryError(Exception):
     '''
     Raised when query failed
     '''
@@ -71,7 +71,7 @@ class TmallParser(BaseParser):
         try:
             dom = PyQuery(url=url)
         except Exception as e:
-            raise QueryException(e.message)
+            raise QueryError(e.message)
         return BaseParser.clean_price(dom(TmallParser.PATTERN)[0].text)
 
 
@@ -104,16 +104,28 @@ class AmazonParser(BaseParser):
         try:
             dom = PyQuery(url=url, opener=opener.open)
         except Exception as e:
-            raise QueryException(e.message)
+            raise QueryError(e.message)
         return BaseParser.clean_price(dom(AmazonParser.PATTERN)[0].text)
 
-_PARSERS_DICT = {
+PARSERS_DICT = {
         'tmall'     :   TmallParser, 
         'amazon'    :   AmazonParser,
 }
 
 def get_parser(name):
-    return _PARSERS_DICT.get(name.lower(), None)
+    try:
+        return PARSERS_DICT[name.lower()]
+    except KeyError:
+        raise QueryError('parser %s not found' % name)
+
+def parse(ename, keyword):
+    '''
+    search the specific keyword in specific eshop
+    '''
+    parser = get_parser(ename)()
+    return parser.parse(keyword)
+
+
 
 def test():
     '''

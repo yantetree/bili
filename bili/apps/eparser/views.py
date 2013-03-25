@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
-from eparser import get_parser, QueryError, ParserNotFound
+from eparser import get_parser, QueryError, PARSERS_DICT, parse
 import gevent
 from utils.decorators import check_method
 
@@ -29,6 +29,7 @@ def get_price(request, ename):
             data['success'] = False
             data['errors'].append(u'查询失败')
         else:
+            data['success'] = True
             data[ename]['value'] = value
 
     return HttpResponse(
@@ -50,14 +51,17 @@ def get_mul_price(request):
         data['success'] = False
         data['errors'].append(u'关键词不能为空')
     else:
-        enames = (set(request.GET.keys())).intersection(PARSERS_DICT.keys())
-        jobs = [gevent.spawn(parser.parse, ename, k) for ename in enames]
-        gevent.joinall(jobs, time_out=5)
-        for i in len(jobs):
+        enames = list(
+                (set(request.GET.keys())).intersection(PARSERS_DICT.keys()))
+        jobs = [gevent.spawn(parse, ename, keyword) for ename in enames]
+        gevent.joinall(jobs, timeout=5)
+        for i in range(len(jobs)):
+            data.update({enames[i]: {'error':'', 'value':''}})
             if jobs[i].exception:
                 data[enames[i]]['error'] = jobs[i].exception.message
             else:
                 data[enames[i]]['value'] = jobs[i].value
+        data['success'] = True
                 
     return HttpResponse(
             json.dumps(context),

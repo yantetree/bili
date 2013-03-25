@@ -124,17 +124,3 @@ def parse(ename, keyword):
     '''
     parser = get_parser(ename)()
     return parser.parse(keyword)
-
-
-
-def test():
-    '''
-    only for test
-    '''
-    tmall_parser = TmallParser()
-    amazon_parser = AmazonParser()
-    print tmall_parser.parse(u'嫌疑人x的獻身')
-    print amazon_parser.parse(u'嫌疑人x的獻身')
-
-if __name__ == '__main__':
-    test()

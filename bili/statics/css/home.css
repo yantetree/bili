@@ -11,7 +11,7 @@
     width: 100%;
 }
 
-.checkbox-wrap label{
+#checkbox-wrap label{
     width: 60px;
     vertical-align: left;
 }

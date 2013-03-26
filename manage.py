@@ -3,6 +3,11 @@ import os
 import sys
 
 if __name__ == "__main__":
+
+    # Patch the gevent
+    from gevent import monkey
+    monkey.patch_all()
+
     cwd = os.path.dirname(__file__)
     root = cwd
     app_path = os.path.join(root, 'bili', 'apps')

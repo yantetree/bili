@@ -1,6 +1,10 @@
 var SEARCH_URL = 'search/';
 var SINGLE_SEARCH_URL = 'search/a/';
 var E_DICT = ['tmall', 'amazon'];
+var NAME_DICT = {
+    tmall: "天猫",
+    amazon: "亚马逊"
+}
 
 function searchRequest(term){
     var data = {
@@ -14,7 +18,9 @@ function searchRequest(term){
         data: data,
         error: function(){ alert("error occurred"); },
         success: function(json){
-            alert(json.data[term].value.price);
+            $("#res-wrap").append("<p><span class=\"label label-info\">" + 
+                NAME_DICT[term] + "</span><span class=\"price\">" +
+                json.data[term].value.price + "</span></p>");
         },
         dataType: "json"
     });
@@ -31,6 +37,7 @@ $('document').ready(function(){
             }, 500);
         }
         var terms = [];
+        $("#res-wrap").html("");
         $("#checkbox-wrap input[type='checkbox']").each(function(){
             if($(this).prop("checked")){
                 terms.push($(this).attr("value"));

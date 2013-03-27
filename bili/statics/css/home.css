@@ -15,3 +15,12 @@
     width: 60px;
     vertical-align: left;
 }
+
+#res-wrap{
+    text-align: center;
+}
+
+#res-wrap .price{
+    position: relative;
+    left: 50px;
+}

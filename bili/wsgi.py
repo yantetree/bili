@@ -15,6 +15,7 @@ framework.
 """
 import os
 
+from django.core.management import setup_environ
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bili.settings")
 
 # This application object is used by any WSGI server configured to use this

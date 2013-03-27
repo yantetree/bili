@@ -1,12 +1,11 @@
 #!/usr/bin/env python2
 import os
 import sys
+#from gevent import monkey; monkey.patch_all()
 
 if __name__ == "__main__":
 
     # Patch the gevent
-    from gevent import monkey
-    monkey.patch_all()
 
     cwd = os.path.dirname(__file__)
     root = cwd

@@ -8,8 +8,7 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 from django.test.client import Client
-from eparser import TmallParser()
-from amazon_parser = AmazonParser()
+from eparser import TmallParser, AmazonParser
 
 
 class ParserTest(TestCase):

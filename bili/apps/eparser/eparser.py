@@ -72,7 +72,8 @@ class TmallParser(BaseParser):
             dom = PyQuery(url=url)
         except Exception as e:
             raise QueryError(e.message)
-        return BaseParser.clean_price(dom(TmallParser.PATTERN)[0].text)
+        return {'price':
+                BaseParser.clean_price(dom(TmallParser.PATTERN)[0].text)}
 
 
 class AmazonParser(BaseParser):
@@ -105,7 +106,8 @@ class AmazonParser(BaseParser):
             dom = PyQuery(url=url, opener=opener.open)
         except Exception as e:
             raise QueryError(e.message)
-        return BaseParser.clean_price(dom(AmazonParser.PATTERN)[0].text)
+        return {'price' : 
+                BaseParser.clean_price(dom(AmazonParser.PATTERN)[0].text)}
 
 PARSERS_DICT = {
         'tmall'     :   TmallParser, 

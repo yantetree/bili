@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 from eparser import get_parser, QueryError, PARSERS_DICT, parse
-import gevent
+#import gevent
 from utils.decorators import check_method
 
 import simplejson as json
@@ -37,35 +37,69 @@ def get_price(request, ename):
             mimetype=u'application/json',
     )
 
-
+#@fixed_login_required
 @check_method('GET')
-def get_mul_price(request):
+def get_single_price(request):
     '''
-    search the price in the multiple eshop
+    search the price in single eshop
     '''
     context = {'status' : 200}
     data = {'errors': []}
     context['data'] = data
     keyword = request.GET.get('k', None)
+    ename = list(
+            (set(request.GET.keys())).intersection(PARSERS_DICT.keys()))[0]
     if not keyword:
         data['success'] = False
         data['errors'].append(u'关键词不能为空')
     else:
-        enames = list(
-                (set(request.GET.keys())).intersection(PARSERS_DICT.keys()))
-        jobs = [gevent.spawn(parse, ename, keyword) for ename in enames]
-        gevent.joinall(jobs, timeout=5)
-        for i in range(len(jobs)):
-            data.update({enames[i]: {'error':'', 'value':''}})
-            if jobs[i].exception:
-                data[enames[i]]['error'] = jobs[i].exception.message
-            else:
-                data[enames[i]]['value'] = jobs[i].value
-        data['success'] = True
-                
+        try:
+            value = parse(ename, keyword)
+        except QueryError:
+            data['success'] = False
+            data['errors'].append(u'查询失败')
+        else:
+            data['success'] = True
+            data.update({ename : {'value': value}})
+
     return HttpResponse(
             json.dumps(context),
             mimetype=u'application/json',
     )
 
+#@check_method('GET')
+#def get_mul_price(request):
+#    '''
+#    search the price in the multiple eshop
+#    '''
+#    context = {'status' : 200}
+#    data = {'errors': []}
+#    context['data'] = data
+#    keyword = request.GET.get('k', None)
+#    if not keyword:
+#        data['success'] = False
+#        data['errors'].append(u'关键词不能为空')
+#    else:
+#        enames = list(
+#                (set(request.GET.keys())).intersection(PARSERS_DICT.keys()))
+#        jobs = [gevent.spawn(parse, ename, keyword) for ename in enames]
+#        if jobs:
+#            gevent.joinall(jobs, timeout=3)
+#        for i in range(len(jobs)):
+#            if jobs[i].dead:
+#                jobs[i].kill()
+#                continue
+#            data.update({enames[i]: {'error':'', 'value':''}})
+#            if jobs[i].exception:
+#                data[enames[i]]['error'] = jobs[i].exception.message
+#            else:
+#                data[enames[i]]['value'] = jobs[i].value
+#                print jobs[i].value
+#        data['success'] = True
+#                
+#    return HttpResponse(
+#            json.dumps(context),
+#            mimetype=u'application/json',
+#    )
+#
 

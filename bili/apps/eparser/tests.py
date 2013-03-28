@@ -12,17 +12,19 @@ from eparser import TmallParser, AmazonParser
 
 
 class ParserTest(TestCase):
-    def test_mul_parser(self):
+    def test_single_parser(self):
         """
         Test the parser
         """
         c = Client()
-        response = c.get('/search/', 
-                {'k': u'嫌疑人x的献身', 'tmall': '', 'amazon': ''})
+        response = c.get('/search/a/', 
+                {'k': u'嫌疑人x的献身', 'tmall': ''})
         self.assertEqual(int(response.status_code), 200)
-        print(response.content)
     def test_parsers(self):
         tmall_parser = TmallParser()
         amazon_parser = AmazonParser()
         print tmall_parser.parse(u'嫌疑人x的獻身')
         print amazon_parser.parse(u'嫌疑人x的獻身')
+
+if __name__ == '__main__':
+    unittest.main()

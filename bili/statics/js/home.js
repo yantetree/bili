@@ -6,6 +6,13 @@ var NAME_DICT = {
     amazon: "亚马逊"
 }
 
+var REPLACE_HTML = 
+    "<div class=\"res row\">" +  
+    "   <a href=\"%HREF%\"><img class=\"img-rounded\"src=\"%SRC%\" height=\"150\"></a>" +
+    "   <span class=\"label label-info\">%ENAME%</span>" +
+    "   <span class=\"price\">%PRICE%</span>" +
+    "</div>";
+
 function searchRequest(term){
     var data = {
         k: $('#cmp-input').val()
@@ -18,9 +25,12 @@ function searchRequest(term){
         data: data,
         error: function(){ alert("error occurred"); },
         success: function(json){
-            $("#res-wrap").append("<p><span class=\"label label-info\">" + 
-                NAME_DICT[term] + "</span><span class=\"price\">" +
-                json.data[term].value.price + "</span></p>");
+            var value = json.data[term].value;
+            html = REPLACE_HTML.replace(/%HREF%/, value.href)
+                               .replace(/%SRC%/, value.img)
+                               .replace(/%ENAME%/, NAME_DICT[term])
+                               .replace(/%PRICE%/, value.price);
+            $("#res-wrap").append(html);
         },
         dataType: "json"
     });

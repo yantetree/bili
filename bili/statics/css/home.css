@@ -16,11 +16,16 @@
     vertical-align: left;
 }
 
-#res-wrap{
+.res{
     text-align: center;
+    margin: 10px 0 10px;
 }
 
 #res-wrap .price{
     position: relative;
-    left: 50px;
+    left: 30px;
 }
+#res-wrap .label{
+    margin-left:20px;
+}
+

@@ -60,7 +60,9 @@ class TmallParser(BaseParser):
     SUFFIX = '/search_product.htm?q={q}&s={s}&sort=p'
 
     # The pyquery parse pattern
-    PATTERN = '.product-iWrap .productPrice em'
+    PRICE_PATTERN = '.product-iWrap .productPrice em'
+    HREF_PATTERN = '.product-iWrap .productImg-wrap a'
+    IMG_PATTERN = '.product-iWrap .productImg-wrap a img'
     def __init__(self):
         self.host = TmallParser.HOST
 
@@ -73,7 +75,12 @@ class TmallParser(BaseParser):
         except Exception as e:
             raise QueryError(e.message)
         return {'price':
-                BaseParser.clean_price(dom(TmallParser.PATTERN)[0].text)}
+                BaseParser.clean_price(dom(TmallParser.PRICE_PATTERN)[0].text),
+                'img':
+                dom(TmallParser.IMG_PATTERN)[0].attrib['data-ks-lazyload'],
+                'href':
+                dom(TmallParser.HREF_PATTERN)[0].attrib['href'],
+        }
 
 
 class AmazonParser(BaseParser):
@@ -91,7 +98,9 @@ class AmazonParser(BaseParser):
                     Chrome/24.0.1312.56 Safari/537.17'),
             ]
 
-    PATTERN = '#result_0 .newPrice span'
+    PRICE_PATTERN = '#result_0 .newPrice span'
+    IMG_PATTERN = '#result_0 .productImage img'
+    HREF_PATTERN = '#result_0 .productImage a'
 
     def __init__(self):
         self.host = AmazonParser.HOST
@@ -107,7 +116,12 @@ class AmazonParser(BaseParser):
         except Exception as e:
             raise QueryError(e.message)
         return {'price' : 
-                BaseParser.clean_price(dom(AmazonParser.PATTERN)[0].text)}
+                BaseParser.clean_price(dom(AmazonParser.PRICE_PATTERN)[0].text),
+                'img':
+                dom(AmazonParser.IMG_PATTERN)[0].attrib['src'],
+                'href':
+                dom(AmazonParser.HREF_PATTERN)[0].attrib['href'],
+               }
 
 PARSERS_DICT = {
         'tmall'     :   TmallParser, 

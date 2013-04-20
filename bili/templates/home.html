@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block head_css_section %}
-    <link href="/static/css/home.css" rel="stylesheet">
-{% endblock head_css_section %}
+    <link href="{{ static_url("css/home.css") }}" rel="stylesheet">
+{% end %}
 {% block body_main %}
 <div id="search-wrap">
     <div id="input-wrap" class="input-append">
@@ -19,7 +19,7 @@
 </div>
 <div id="res-wrap">
 </div>
-{% endblock body_main %}
+{% end %}
 {% block footer_javascript_page %}
-<script src="/static/js/home.js"></script>
-{% endblock footer_javascript_page %}
+<script src="{{ static_url("js/home.js") }}"></script>
+{% end %}

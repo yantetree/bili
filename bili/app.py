@@ -28,6 +28,8 @@ class Application(tornado.web.Application):
     '''
     def __init__(self):
         handlers = [
+            (r"/", HomeRedirectHandler),
+            (r"/home/", HomeHandler),
             (r"/test/session", TestSession),
             (r"/test/register", TestRegister),
             (r"/test/login", TestLogin),
@@ -36,6 +38,7 @@ class Application(tornado.web.Application):
         settings = {
                 "template_path": os.path.join(os.path.dirname(__file__), 
                     "templates"),
+                "static_path": os.path.join(os.path.dirname(__file__), "statics"),
                 "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
                 "xsrf_cookies": True,
                 "login_url": "/login",

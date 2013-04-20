@@ -5,12 +5,17 @@ import tornado.web
 import sys
 import os
 
-from config import *
-from models import *
+app_path = os.path.join(os.path.dirname(__file__), '..')
+if app_path not in sys.path:
+    sys.path.append(app_path)
+
+from bili.config import *
+from bili.handlers.tests import *
+from bili.handlers.main import *
+from bili.models import *
+from bili.utils.store import RedisStore
+from bili.utils.config_parser import config_parser
 from sqlalchemy.orm import scoped_session, sessionmaker
-from utils.store import RedisStore
-from utils.config_parser import config_parser
-from tests import *
 from tornado.options import define, options
 
 try:
@@ -18,6 +23,7 @@ try:
 except ImportError:
     print "`redis` package is required"
     sys.exit(0)
+
    
 define("port", default=8888, help="run on the given port", type=int)
     
@@ -28,8 +34,8 @@ class Application(tornado.web.Application):
     '''
     def __init__(self):
         handlers = [
-            (r"/", HomeRedirectHandler),
-            (r"/home/", HomeHandler),
+            (r"/", tornado.web.RedirectHandler, dict(url="/home")),
+            (r"/home", HomeHandler),
             (r"/test/session", TestSession),
             (r"/test/register", TestRegister),
             (r"/test/login", TestLogin),

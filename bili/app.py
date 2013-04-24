@@ -12,6 +12,7 @@ if app_path not in sys.path:
 from bili.config import *
 from bili.handlers.tests import *
 from bili.handlers.main import *
+from bili.handlers.eshop import *
 from bili.models import *
 from bili.utils.store import RedisStore
 from bili.utils.config_parser import config_parser
@@ -36,6 +37,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/", tornado.web.RedirectHandler, dict(url="/home")),
             (r"/home", HomeHandler),
+            (r"/search/a", GetPrice),
             (r"/test/session", TestSession),
             (r"/test/register", TestRegister),
             (r"/test/login", TestLogin),
@@ -48,6 +50,7 @@ class Application(tornado.web.Application):
                 "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
                 "xsrf_cookies": True,
                 "login_url": "/login",
+                "debug": True,
                 "configs": ["config.py",]
         }
         files = [open(config_file) for config_file in settings["configs"]]

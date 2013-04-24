@@ -1,5 +1,5 @@
 var SEARCH_URL = 'search/';
-var SINGLE_SEARCH_URL = 'search/a/';
+var SINGLE_SEARCH_URL = 'search/a';
 var E_DICT = ['tmall', 'amazon'];
 var NAME_DICT = {
     tmall: "天猫",
@@ -20,7 +20,7 @@ function searchRequest(term){
     data[term] = '';
     $.ajax({
         type: "GET",
-        timeout: 5000,
+        timeout: 20000,
         url: SINGLE_SEARCH_URL,
         data: data,
         error: function(){ alert("error occurred"); },

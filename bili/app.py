@@ -10,9 +10,10 @@ if app_path not in sys.path:
     sys.path.append(app_path)
 
 from bili.config import *
-from bili.handlers.tests import *
-from bili.handlers.main import *
+from bili.handlers.auth import *
 from bili.handlers.eshop import *
+from bili.handlers.main import *
+from bili.handlers.tests import *
 from bili.models import *
 from bili.utils.store import RedisStore
 from bili.utils.config_parser import config_parser
@@ -38,6 +39,9 @@ class Application(tornado.web.Application):
             (r"/", tornado.web.RedirectHandler, dict(url="/home")),
             (r"/home", HomeHandler),
             (r"/search/a", GetPrice),
+            (r"/login", LoginHandler),
+            (r"/logout", LogoutHandler),
+            (r"/register", RegisterHandler),
             (r"/test/session", TestSession),
             (r"/test/register", TestRegister),
             (r"/test/login", TestLogin),

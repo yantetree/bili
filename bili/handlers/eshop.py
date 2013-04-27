@@ -32,9 +32,10 @@ class GetPrice(web.RequestHandler):
         parser = parser_cls()
         headers = parser_cls.DEFAULT_HEADERS
         # The `follow_redirects` arguments must be true,
+        # and the max_redirects must be larger then 0(default to 0),
         # or the SimpleHTTPClient will return a HTTPError if 3xx status code comes.
         request = HTTPRequest(parser.make_url(keyword), headers=headers, 
-                follow_redirects=True)
+                follow_redirects=True, max_redirects=20)
         #AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
         client = AsyncHTTPClient()
         response = yield client.fetch(request)

@@ -38,6 +38,9 @@ def session(func):
     '''
     Add session attribute to the handler before the request begins.
     And save it to the store when request ends.
+    NOTE:
+        this decorator should always be at top of other decorators which
+        use session(because of the decorator implementation.
     '''
     def wrapper(handler, *args, **kwargs):
         session_id = handler.get_secure_cookie("session_id")

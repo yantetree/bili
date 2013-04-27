@@ -28,7 +28,7 @@ def get_user(handler):
 
 def is_login(handler):
     '''
-    Check whether the current request is logined
+    Check whether the current request has been logined
     '''
     if get_user(handler):
         return True

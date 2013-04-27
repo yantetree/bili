@@ -26,6 +26,15 @@ def get_user(handler):
     except KeyError or NoResultFound:
         return None
 
+def is_login(handler):
+    '''
+    Check whether the current request is logined
+    '''
+    if get_user(handler):
+        return True
+    else:
+        return False
+
 def login(handler, account, password):
     '''
     Try login and set the login session,
@@ -43,6 +52,9 @@ def login(handler, account, password):
     handler.session.set('user', user)
     return user
 
+def logout(handler):
+    handler.session.delete('user')
+
 def register(handler, username, email, password):
     '''
     Register new user.
@@ -54,5 +66,3 @@ def register(handler, username, email, password):
     handler.application.db.commit()
     return user
 
-def logout(handler):
-    handler.session.delete('user')

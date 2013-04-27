@@ -31,6 +31,7 @@ class User(Base):
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
+        self.raw_password = password
         self.password = self.encrypt(password)
 
     @staticmethod
@@ -41,7 +42,7 @@ class User(Base):
         return sha(plaintext).hexdigest()
 
     def __repr__(self):
-        return "<User, %s>" % username
+        return "<User, %s>" % self.username
 
 
 if __name__ == '__main__':

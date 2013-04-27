@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from bili.auth.decorators import login_required
 from bili.eparser import get_parser, QueryError, PARSERS_DICT
 from bili.utils.session import session
 from tornado import web, gen
@@ -8,6 +9,7 @@ __all__ = ['GetPrice',]
 
 class GetPrice(web.RequestHandler):
     @session
+    @login_required
     @web.asynchronous
     @gen.coroutine
     def get(self):

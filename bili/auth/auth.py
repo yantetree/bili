@@ -13,14 +13,16 @@ def get_user(handler):
     '''
     Get current login user
     '''
-    assert hasattr(handler, 'session'), \
-            "Should implement session extension first"
-    assert hasattr(handler, 'db'), \
+    # Because session is implemented by decorator,
+    # we cannot check session implementation in another decorator.
+    #assert hasattr(handler, 'session'), \
+    #        "Should implement session extension first"
+    assert hasattr(handler.application, 'db'), \
             "Should implement database api first"
     assert hasattr(handler.application, 'store'), \
             "Should implement store api first"
     try:
-        user = session['user']
+        user = handler.session['user']
     except KeyError or NoResultFound:
         return None
 

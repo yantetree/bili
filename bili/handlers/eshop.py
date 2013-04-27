@@ -1,4 +1,9 @@
 # -*- coding:utf-8 -*-
+'''
+Eshop modules.
+TMall and Amazon-cn support implemented
+'''
+
 from bili.auth.decorators import login_required
 from bili.eparser import get_parser, QueryError, PARSERS_DICT
 from bili.utils.session import session

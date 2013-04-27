@@ -1,22 +1,9 @@
-Tornado Snippets
+比利网
 ===
 
-Here are some snippets in python I wrote to get accustomed to tornado.
+比利网是一个简易的比价系统。目前增加对天猫、亚马逊的支持。
 
-How to
----
-For running the snippets, follow these steps.
-
-+ Run `sudo pip install -r requirements.pip` to get the required packages
-
-+ Modify the `config.py` file, replace
-`username`, `password` field in the `DB_URL`
-
-+ Import the `scheme.sql` file into your mysql
-
-+ Run `run.py`
-
-Dependency
+依赖
 ---
 
 + [Tornado](http://tornadoweb.com)

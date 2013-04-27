@@ -1,10 +1,11 @@
 import pickle
 
-from tornado import httpserver, ioloop, web, options
-from sqlalchemy.orm.exc import NoResultFound
 from bili.models import User
+from bili.filters import check_user
+from sqlalchemy.orm.exc import NoResultFound
+from tornado import httpserver, ioloop, web, options
 
-__all__ = ['get_user', 'login', 'register', 'logout']
+__all__ = ['get_user', 'is_login', 'login', 'register', 'logout']
 
 #class AuthBaseHandler(web.RequestHandler):
 #    def get_curr_user(self):
@@ -22,7 +23,7 @@ def get_user(handler):
     assert hasattr(handler.application, 'store'), \
             "Should implement store api first"
     try:
-        user = handler.session['user']
+        return handler.session['user']
     except KeyError or NoResultFound:
         return None
 
@@ -40,6 +41,8 @@ def login(handler, account, password):
     Try login and set the login session,
     both username and email can be regarded as the account.
     '''
+    if not account or not password:
+        return None
     try:
         user = handler.application.db.query(User).filter_by(username=account, 
                 password=User.encrypt(password)).one()

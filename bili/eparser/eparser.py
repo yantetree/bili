@@ -77,13 +77,16 @@ class TmallParser(BaseParser):
             dom = PyQuery(content)
         except Exception as e:
             raise QueryError(e.message)
-        return {'price':
-                BaseParser.clean_price(dom(TmallParser.PRICE_PATTERN)[0].text),
-                'img':
-                dom(TmallParser.IMG_PATTERN)[0].attrib['data-ks-lazyload'],
-                'href':
-                dom(TmallParser.HREF_PATTERN)[0].attrib['href'],
-        }
+        try:
+            return {'price':
+                    BaseParser.clean_price(dom(TmallParser.PRICE_PATTERN)[0].text),
+                    'img':
+                    dom(TmallParser.IMG_PATTERN)[0].attrib['data-ks-lazyload'],
+                    'href':
+                    dom(TmallParser.HREF_PATTERN)[0].attrib['href'],
+            }
+        except IndexError:
+            return None
 
 
 class AmazonParser(BaseParser):
@@ -120,13 +123,18 @@ class AmazonParser(BaseParser):
             dom = PyQuery(content)
         except Exception as e:
             raise QueryError(e.message)
-        return {'price' : 
-                BaseParser.clean_price(dom(AmazonParser.PRICE_PATTERN)[0].text),
-                'img':
-                dom(AmazonParser.IMG_PATTERN)[0].attrib['src'],
-                'href':
-                dom(AmazonParser.HREF_PATTERN)[0].attrib['href'],
-               }
+        try:
+            return {'price' : 
+                    BaseParser.clean_price(dom(AmazonParser.PRICE_PATTERN)[0].text),
+                    'img':
+                    dom(AmazonParser.IMG_PATTERN)[0].attrib['src'],
+                    'href':
+                    dom(AmazonParser.HREF_PATTERN)[0].attrib['href'],
+                   }
+        except IndexError:
+            # No result found
+            return None
+
 
 PARSERS_DICT = {
         'tmall'     :   TmallParser, 

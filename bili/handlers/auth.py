@@ -1,30 +1,30 @@
 # -*- coding:utf-8 -*-
 from bili.auth import is_login, login, logout, register
 from bili.filters import check_user
+from bili.handlers.basehandler import BaseRequestHandler
 from bili.utils.session import session
 from tornado import web
 
 __all__ = ['LoginHandler', 'RegisterHandler', 'LogoutHandler']
 
-class LoginHandler(web.RequestHandler):
+class LoginHandler(BaseRequestHandler):
     @session
     def get(self):
-        context = {'errors':{}}
+        context = {'errors':{}, 'title':u'登陆', 'request':self}
         next_url = self.get_argument('next', default='/home')
         context['next_url'] = next_url
         if is_login(self):
             # if the request has been logined, redirect to the next page
             self.redirect(next_url)
         else: 
-            return self.render('auth/login.html', context=context,
-                    title='登录')
+            return self.render('auth/login.html', **context)
 
     @session
     def post(self):
         '''
         Login action
         '''
-        context = {'errors':{}}
+        context = {'errors':{}, 'title':u'登陆', 'request':self}
         next_url = self.get_argument('next', default='/home')
         context['next'] = next_url
         if is_login(self):
@@ -37,27 +37,32 @@ class LoginHandler(web.RequestHandler):
             if not user:
                 context['username'] = username
                 context['errors']['username'] = u'用户名或密码错误'
-                return self.render('auth/login.html', context=context,
-                        title='登录',)
+                return self.render('auth/login.html', **context)
             else:
                 self.redirect(next_url)
 
 
-class LogoutHandler(web.RequestHandler):
-    pass
-
-class RegisterHandler(web.RequestHandler):
+class LogoutHandler(BaseRequestHandler):
     @session
     def get(self):
-        context = {'errors':{}}
+        next_url = self.get_argument('next', default='/home')
+        logout(self)
+        self.redirect(next_url)
+
+
+class RegisterHandler(BaseRequestHandler):
+    @session
+    def get(self):
+        context = {'errors':{}, 'title':u'注册', 'request':self}
         next_url = self.get_argument('next', default='/home')
         context['next_url'] = next_url
-        return self.render('auth/register.html', context=context,
-                title=u'注册')
+        context['title'] = u'注册'
+        context['title'] = self
+        return self.render('auth/register.html', **context)
 
     @session
     def post(self):
-        context = {'errors':{}}
+        context = {'errors':{}, 'title':u'注册', 'request':self}
         next_url = self.get_argument('next', default='/home')
         context['next_url'] = next_url
         username = self.get_argument('u', default=None)
@@ -71,7 +76,6 @@ class RegisterHandler(web.RequestHandler):
             login(self, user.username, user.password)
             self.redirect(next_url)
         else:
-            return self.render('auth/register.html', context=context,
-                    title=u'注册')
+            return self.render('auth/register.html', **context)
 
             

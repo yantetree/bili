@@ -37,15 +37,15 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", tornado.web.RedirectHandler, dict(url="/home")),
-            (r"/home", HomeHandler),
-            (r"/search/a", GetPrice),
-            (r"/login", LoginHandler),
-            (r"/logout", LogoutHandler),
-            (r"/register", RegisterHandler),
-            (r"/test/session", TestSession),
-            (r"/test/register", TestRegister),
-            (r"/test/login", TestLogin),
-            (r"/test/logout", TestLogout),
+            (r"/home/", HomeHandler),
+            (r"/search/a/", GetPrice),
+            (r"/login/", LoginHandler),
+            (r"/logout/", LogoutHandler),
+            (r"/register/", RegisterHandler),
+            (r"/test/session/", TestSession),
+            (r"/test/register/", TestRegister),
+            (r"/test/login/", TestLogin),
+            (r"/test/logout/", TestLogout),
         ]
         settings = {
                 "template_path": os.path.join(os.path.dirname(__file__), 
@@ -53,7 +53,7 @@ class Application(tornado.web.Application):
                 "static_path": os.path.join(os.path.dirname(__file__), "statics"),
                 "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
                 "xsrf_cookies": True,
-                "login_url": "/login",
+                "login_url": "/login/",
                 "debug": True,
                 "configs": ["config.py",]
         }

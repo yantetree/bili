@@ -8,7 +8,7 @@ def login_required(func):
     def wrapper(handler, *args, **kwargs):
         user = get_user(handler)
         if not user:
-            handler.redirect('/login')
+            handler.redirect('/login/')
         else:
             setattr(handler, 'user', user)
             return func(handler, *args, **kwargs)

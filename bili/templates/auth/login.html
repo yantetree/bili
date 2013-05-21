@@ -9,12 +9,12 @@
             {% module xsrf_form_html() %}
             <legend>登录</legend>
             <label>用户名或邮箱</label>
-            <input type="text" name="u" value="{{ context.get('username', '')}}">
-            <span class="text-error">{{ context['errors'].get('username', '') }}</span>
+            <input type="text" name="u" value="{{ username }}">
+            <span class="text-error">{{ errors.get('username', '') }}</span>
             <label>密码</label>
             <input type="password" name="p">
-            <span class="text-error">{{ context['errors'].get('password', '') }}</span>
-            <input type="hidden" name="next" value="{{ context.get('next_url', '') }}">
+            <span class="text-error">{{ errors.get('password', '') }}</span>
+            <input type="hidden" name="next" value="{{ next }}">
             <p><button type="submit" class="btn">确定</button></p>
         </fieldset>
     </form>

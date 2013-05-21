@@ -56,7 +56,10 @@ def login(handler, account, password):
     return user
 
 def logout(handler):
-    handler.session.delete('user')
+    try:
+        handler.session.delete('user')
+    except KeyError:
+        pass
 
 def register(handler, username, email, password):
     '''

@@ -25,11 +25,18 @@ function searchRequest(term){
         data: data,
         error: function(){ alert("error occurred"); },
         success: function(json){
+            var html;
+            /*
+            if(!json.data.success){
+                html = REPLACE_HTML.replace(/%HREF%/, "#");
+                        .replace(/%SRC%/, value
+            }
+            */
             var value = json.data[term].value;
             html = REPLACE_HTML.replace(/%HREF%/, value.href)
-                               .replace(/%SRC%/, value.img)
-                               .replace(/%ENAME%/, NAME_DICT[term])
-                               .replace(/%PRICE%/, value.price);
+                .replace(/%SRC%/, value.img)
+                .replace(/%ENAME%/, NAME_DICT[term])
+                .replace(/%PRICE%/, value.price);
             $("#res-wrap").append(html);
         },
         dataType: "json"
